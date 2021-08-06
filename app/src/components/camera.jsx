@@ -1,7 +1,7 @@
 import React from 'react'
 import { store } from '../nft.js'
 
-const Camera = () => {
+const Camera = ({ getUrl }) => {
   const upload = () => {
     return new Promise(async (resolve, reject) => {
       const filePicker = document.getElementById('fileInput')
@@ -15,8 +15,9 @@ const Camera = () => {
       console.log(myFile)
 
       const metadata = await store(myFile)
+      console.log(metadata)
 
-      resolve(metadata.data.image.href)
+      resolve(metadata)
     })
   }
 
@@ -26,7 +27,9 @@ const Camera = () => {
       type="file"
       accept="image/x-png,image/jpeg,image/gif"
       capture="environment"
-      onChange={() => upload()}
+      onChange={async () => {
+        getUrl(await upload())
+      }}
     />
   )
 }

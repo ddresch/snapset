@@ -5,8 +5,8 @@ const client = new NFTStorage({ token: API_TOKEN })
 
 export const store = async file => {
   const metadata = await client.store({
-    name: 'Pinpie',
-    description: 'Pin is not delicious beef!',
+    name: file.name,
+    description: 'web4.0',
     image: file,
     //  new File(
     //   [
