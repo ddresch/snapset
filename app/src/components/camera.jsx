@@ -1,4 +1,5 @@
 import React from 'react'
+import { store } from '../nft.js'
 
 const Camera = () => {
   const upload = () => {
@@ -13,6 +14,7 @@ const Camera = () => {
       const myFile = filePicker.files[0]
       console.log(myFile)
 
+      await store(myFile)
       resolve()
     })
   }
