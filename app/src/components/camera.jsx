@@ -14,8 +14,9 @@ const Camera = () => {
       const myFile = filePicker.files[0]
       console.log(myFile)
 
-      await store(myFile)
-      resolve()
+      const metadata = await store(myFile)
+
+      resolve(metadata.data.image.href)
     })
   }
 
