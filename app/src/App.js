@@ -10,7 +10,7 @@ import logo from './logo.svg'
 import './App.css'
 import Camera from './components/Camera'
 import { SnapsetContractAddress, SnapTokenContractAddress } from './constants/addresses'
-import Snapset from './artifacts/contracts/Snapset.sol/Snapset.json'
+import Snapset from './build/contracts/Snapset.json'
 import { accountConnectionState } from './Atoms.js'
 import ConnectWallet from './components/ConnectWallet.jsx'
 

@@ -6,15 +6,17 @@ import WalletConnectProvider from '@walletconnect/web3-provider'
 import Authereum from "authereum"
 import UniLogin from "@unilogin/provider"
 import BurnerConnectProvider from "@burner-wallet/burner-connect-provider"
+import { IconWallet } from '@tabler/icons';
 // App components
 import { accountConnectionState, accountSignerState, accountAddressState } from '../Atoms.js'
+import Hexvatar from './Hexvatar.jsx'
+
 
 const providerOptions = {
     walletconnect: { package: WalletConnectProvider, options: {
         infuraId: "a9a8ac40ec884877b9b38cbc765efed9",
-        // bridge: "http://192.168.0.132:8545",
         rpc: {
-            1337: "http://192.168.0.132:8545",                
+            1337: "http://192.168.0.132:8545",                     
         },
     }},
     authereum: { package: Authereum },
@@ -65,17 +67,27 @@ const ConnectWallet = () => {
         setAccountAddressState(null)
     }
 
-    return (<>
+    const formatHexAddress = (add) => {
+        return add.substr(0,6) + '...' + add.substr(add.length -5)
+    }
+
+    return (<div className="account-address">
+        <IconWallet 
+            size={36} // set custom `width` and `height`
+            color="black" // set `stroke` color
+            stroke={2}  // set `stroke-width`
+            strokeLinejoin="miter" // override other SVG props
+        />
         {(!accountConnected) &&
             <button onClick={connect}>Connect</button>
         }
         {(accountConnected) &&
             <>
-                <button onClick={disconnect}>Disconnect</button>
-                <span>{accountAddress}</span>
+                <button onClick={disconnect}>{formatHexAddress(accountAddress)}</button>
+                <Hexvatar name={accountAddress} />
             </>
         }
-    </>)
+    </div>)
 }
 
 export default ConnectWallet

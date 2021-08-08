@@ -19,6 +19,23 @@ body {
   pointer-events: none;
 }
 
+.account-address {
+  background: rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  margin: auto;
+  border-radius: 25px;
+  margin-top: 20px;
+  padding: 6px;
+  text-align: right;
+  padding-right: 8px;
+}
+
+.account-address button {
+  background: none;
+  border: none;
+  font-size: 1em;
+}
+
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
