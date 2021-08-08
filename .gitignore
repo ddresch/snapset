@@ -1,3 +1,5 @@
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -102,3 +104,10 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Blockchain / Hardhat
+.secret
+cache
+artifacts
+factories
+.env
