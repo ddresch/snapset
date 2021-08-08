@@ -10,6 +10,10 @@ module.exports = {
     hardhat: {
       chainId: 1337,
     },
+    ganache: {
+      url: "http://192.168.0.132:8545",
+      chainId: 1337,
+    },
     mumbai: {
       url: "https://rpc-mumbai.matic.today",
       accounts: [privateKey],
