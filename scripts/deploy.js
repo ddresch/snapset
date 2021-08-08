@@ -12,8 +12,7 @@ async function main() {
   const st = await SNAPTOKEN.deploy();
   await st.deployed();
   console.log("SnapToken deployed to:", st.address);
-  await st.initialize(snap.address);
-  console.log("SnapToken initialized with:", snap.address);
+  await st.initialize(snap.address);  
 }
 
 // We recommend this pattern to be able to use async/await everywhere
