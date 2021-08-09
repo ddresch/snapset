@@ -38,6 +38,10 @@ function App() {
     // let tokenId = value.toNumber()    
   }
 
+  const startNewSnapset = () => {
+    setUrl(null)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -68,19 +72,24 @@ function App() {
                 {(url !== null) && <img src={url} alt="user taken nft" />}
               </>
             }            
-          </div>     
-          <Camera
-            getUrl={metadata => {
-              const [, , hash, name] = metadata.data.image.href.split('/')
-              const httpsUrl = ({ hash, name }) =>
-                `https://${hash}.${ipfsGateway}/${name}`
-              setUrl(
-                httpsUrl({hash, name})
-              )
-            }}
-          />
+          </div>    
+          {(url === null) && 
+            <Camera
+              getUrl={metadata => {
+                const [, , hash, name] = metadata.data.image.href.split('/')
+                const httpsUrl = ({ hash, name }) =>
+                  `https://${hash}.${ipfsGateway}/${name}`
+                setUrl(
+                  httpsUrl({hash, name})
+                )
+              }}
+            />
+          }           
           {(url && url.indexOf(ipfsGateway) > -1) &&
-            <button onClick={() => createSnapset(url)}>Mint NFT</button>
+            <>
+              <button onClick={() => createSnapset(url)}>Mint NFT</button>
+              <button onClick={() => startNewSnapset()}>Create New</button>
+            </>
           }
         </>
       }          
