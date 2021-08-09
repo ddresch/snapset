@@ -6,7 +6,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider'
 import Authereum from "authereum"
 import UniLogin from "@unilogin/provider"
 import BurnerConnectProvider from "@burner-wallet/burner-connect-provider"
-import { IconWallet } from '@tabler/icons';
+import { IconWallet } from '@tabler/icons'
 // App components
 import { accountConnectionState, accountSignerState, accountAddressState } from '../Atoms.js'
 import Hexvatar from './Hexvatar.jsx'
@@ -36,8 +36,6 @@ const modalOptions = {
     disableInjectedProvider: false,
     providerOptions
 }
-
-// window.w3Modal = w3Modal
 
 const ConnectWallet = () => {
 

@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { useRecoilValue } from 'recoil'
+import { IconCameraSelfie } from '@tabler/icons';
 // App components
 import appLogo from './styles/app-logo.png'
-import logo from './logo.svg'
 import './App.css'
 import Camera from './components/Camera'
 import { SnapsetContractAddress, SnapTokenContractAddress } from './constants/addresses'
@@ -17,7 +17,7 @@ import ConnectWallet from './components/ConnectWallet.jsx'
 const ipfsGateway = 'ipfs.dweb.link'
 
 function App() {
-  const [url, setUrl] = useState(logo)
+  const [url, setUrl] = useState(null)
   const accountConnected = useRecoilValue(accountConnectionState);
 
   async function createSnapset(url) {
@@ -31,9 +31,9 @@ function App() {
     let contract = new ethers.Contract(SnapsetContractAddress, Snapset.abi, signer)
     let transaction = await contract.createSnapset(signerAddress, url, SnapTokenContractAddress)
     let tx = await transaction.wait()
-    let event = tx.events[0]
-    let value = event.args[2]
-    let tokenId = value.toNumber()    
+    // let event = tx.events[0]
+    // let value = event.args[2]
+    // let tokenId = value.toNumber()    
   }
 
   return (
@@ -49,21 +49,23 @@ function App() {
       <ConnectWallet />
       {(accountConnected) && 
         <>
-          <img src={url} alt="user taken nft" />
+          <div className="photo-frame">
+            {(url === null) &&
+              <IconCameraSelfie size={50} color="black" stroke={2} />
+            }
+            {(url !== null) && <img src={url} alt="user taken nft" />}
+          </div>     
           <Camera
             getUrl={metadata => {
               const [, , hash, name] = metadata.data.image.href.split('/')
               const httpsUrl = ({ hash, name }) =>
                 `https://${hash}.${ipfsGateway}/${name}`
               setUrl(
-                httpsUrl({
-                  hash,
-                  name,
-                })
+                httpsUrl({hash, name})
               )
             }}
           />
-          {(url.indexOf(ipfsGateway) > -1) &&
+          {(url && url.indexOf(ipfsGateway) > -1) &&
             <button onClick={() => createSnapset(url)}>Mint NFT</button>
           }
         </>

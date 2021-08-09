@@ -36,6 +36,17 @@ body {
   font-size: 1em;
 }
 
+.photo-frame {
+  width: 80%;
+  height: 40vh;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  justify-content: center;
+  margin: 17px auto;
+}
+
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
