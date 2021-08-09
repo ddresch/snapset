@@ -21,6 +21,7 @@
     "nft.storage": "^3.0.1",
     "prettier": "^2.3.2",
     "react": "^17.0.2",
+    "react-awesome-loaders": "^0.1.37",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
     "recoil": "^0.4.0",

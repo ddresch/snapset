@@ -1,8 +1,14 @@
 import React from 'react'
+import { useSetRecoilState } from 'recoil'
 import { store } from '../nft.js'
+import { uploadingState } from '../Atoms.js'
 
 const Camera = ({ getUrl }) => {
+
+  const setUploadingState = useSetRecoilState(uploadingState)
+
   const upload = () => {
+    setUploadingState(true)
     return new Promise(async (resolve, reject) => {
       const filePicker = document.getElementById('fileInput')
 
@@ -17,6 +23,7 @@ const Camera = ({ getUrl }) => {
       const metadata = await store(myFile)
       console.log(metadata)
 
+      setUploadingState(false)
       resolve(metadata)
     })
   }

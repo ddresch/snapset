@@ -5,20 +5,22 @@ import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 import { useRecoilValue } from 'recoil'
 import { IconCameraSelfie } from '@tabler/icons';
+import { SunspotLoader } from "react-awesome-loaders";
 // App components
 import appLogo from './styles/app-logo.png'
 import './App.css'
 import Camera from './components/Camera'
 import { SnapsetContractAddress, SnapTokenContractAddress } from './constants/addresses'
 import Snapset from './build/contracts/Snapset.json'
-import { accountConnectionState } from './Atoms.js'
+import { accountConnectionState, uploadingState } from './Atoms.js'
 import ConnectWallet from './components/ConnectWallet.jsx'
 
 const ipfsGateway = 'ipfs.dweb.link'
 
 function App() {
   const [url, setUrl] = useState(null)
-  const accountConnected = useRecoilValue(accountConnectionState);
+  const accountConnected = useRecoilValue(accountConnectionState)
+  const isUploading = useRecoilValue(uploadingState)
 
   async function createSnapset(url) {
     // let's connect the users wallet
@@ -50,10 +52,22 @@ function App() {
       {(accountConnected) && 
         <>
           <div className="photo-frame">
-            {(url === null) &&
-              <IconCameraSelfie size={50} color="black" stroke={2} />
+            {(isUploading) &&
+              <SunspotLoader
+                gradientColors={["#FFBE11", "#FFFFFF"]}
+                shadowColor={"#232323"}
+                desktopSize={"128px"}
+                mobileSize={"100px"}
+              />
             }
-            {(url !== null) && <img src={url} alt="user taken nft" />}
+            {(isUploading === false) &&
+              <>
+                {(url === null) &&
+                  <IconCameraSelfie size={50} color="black" stroke={2} />
+                }
+                {(url !== null) && <img src={url} alt="user taken nft" />}
+              </>
+            }            
           </div>     
           <Camera
             getUrl={metadata => {

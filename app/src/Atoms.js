@@ -14,3 +14,8 @@ export const accountAddressState = atom({
     key: 'accountAddressState',
     default: null,
 });
+
+export const uploadingState = atom({
+    key: 'uploadingState',
+    default: false,
+});
