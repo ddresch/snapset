@@ -21,6 +21,7 @@ function App() {
   const [url, setUrl] = useState(null)
   const accountConnected = useRecoilValue(accountConnectionState)
   const isUploading = useRecoilValue(uploadingState)
+  const startNewSnapset = () => setUrl(null)
 
   async function createSnapset(url) {
     // let's connect the users wallet
@@ -36,11 +37,7 @@ function App() {
     // let event = tx.events[0]
     // let value = event.args[2]
     // let tokenId = value.toNumber()    
-  }
-
-  const startNewSnapset = () => {
-    setUrl(null)
-  }
+  }  
 
   return (
     <div className="App">

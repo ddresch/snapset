@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { ethers } from 'ethers'
+import { ethers, Contract } from 'ethers'
 import Web3Modal from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import Authereum from "authereum"
@@ -10,6 +10,8 @@ import { IconWallet } from '@tabler/icons'
 // App components
 import { accountConnectionState, accountSignerState, accountAddressState } from '../Atoms.js'
 import Hexvatar from './Hexvatar.jsx'
+import { SnapTokenContractAddress } from '../constants/addresses'
+import SnapTokenAbi from '../build/contracts/SnapToken.json'
 
 
 const providerOptions = {
@@ -39,23 +41,22 @@ const modalOptions = {
 
 const ConnectWallet = () => {
 
-    const [accountConnected, setAccountConnectionState] = useRecoilState(accountConnectionState);
-    const setAccountSignerState = useSetRecoilState(accountSignerState);
-    const [accountAddress, setAccountAddressState] = useRecoilState(accountAddressState);
+    const [accountConnected, setAccountConnectionState] = useRecoilState(accountConnectionState)
+    const setAccountSignerState = useSetRecoilState(accountSignerState)
+    const [accountAddress, setAccountAddressState] = useRecoilState(accountAddressState)
+    const [snapTokenAmount, setSnapTokenAmount] = useState(0)
     
     const web3Modal = new Web3Modal(modalOptions)
 
     const connect = async () => {
         const modal = await web3Modal.toggleModal()
-        const connection = await web3Modal.connect();
-        console.log(connection)        
+        const connection = await web3Modal.connect();    
         const provider = new ethers.providers.Web3Provider(connection)    
         const signer = provider.getSigner()
         const signerAddress = await signer.getAddress()
-        console.log(signerAddress)
-        setAccountConnectionState(true)        
+        setAccountConnectionState(true)
         setAccountAddressState(signerAddress)
-        // setAccountSignerState(signer)
+        await getBalance(signerAddress, provider, SnapTokenAbi.abi)
     }
 
     const disconnect = () => {
@@ -65,26 +66,31 @@ const ConnectWallet = () => {
         setAccountAddressState(null)
     }
 
+    const getBalance = async (a, p, abi) => {
+        const contract = new Contract(SnapTokenContractAddress, abi, p)
+        const balance = await contract.balanceOf(a)
+        setSnapTokenAmount(ethers.utils.formatEther(balance.toString()))
+    }
+
     const formatHexAddress = (add) => {
         return add.substr(0,6) + '...' + add.substr(add.length -5)
     }
 
-    return (<div className="account-address">
-        <IconWallet 
-            size={36} // set custom `width` and `height`
-            color="black" // set `stroke` color
-            stroke={2}  // set `stroke-width`
-            strokeLinejoin="miter" // override other SVG props
-        />
+    return (<div className="account-address">        
         {(!accountConnected) &&
-            <button onClick={connect}>Connect</button>
+            <>
+                <IconWallet size={36} color="black" stroke={2} strokeLinejoin="miter" />
+                <button onClick={connect}>Connect</button>
+            </>
         }
         {(accountConnected) &&
             <>
-                <button onClick={disconnect}>{formatHexAddress(accountAddress)}</button>
                 <Hexvatar name={accountAddress} />
+                <button onClick={disconnect}>{formatHexAddress(accountAddress)}</button>
+                <IconWallet size={36} color="black" stroke={2} strokeLinejoin="miter" />
+                <button>{snapTokenAmount} SNAPS</button>
             </>
-        }
+        }        
     </div>)
 }
 
